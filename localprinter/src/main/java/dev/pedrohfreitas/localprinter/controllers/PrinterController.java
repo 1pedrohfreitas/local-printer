@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,4 +36,12 @@ public class PrinterController {
 		Page<String> printersPage = new PageImpl<String>(printers, pageable, printers.size());
 		return new ResponseDTO<Page<String>>().ok(printersPage, null);
 	}
+	
+	@PostMapping(path = "/print", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<ResponseDTO<String>> print(@RequestBody String body) {
+		printerService.printTempFile(body);
+		return new ResponseDTO<String>().ok("OK", null);
+	}
+	
+	
 }
